@@ -31,7 +31,7 @@ SELECT income / user_count as avg_income FROM order
 - `ALL`运算符是一个逻辑运算符，它将单个值与子查询返回的单列值集进行比较
 
   ```
-  SELECT  * FROM table_name WHERE column_name > ALL (subquery) 查询查找column_name列中的值大于子查询返回的最大值的行
+  SELECT * FROM table_name WHERE column_name > ALL (subquery) 查询查找column_name列中的值大于子查询返回的最大值的行
   ```
 
 - 求众数,如下案例是我需要从评价表中找出被评价最多的客服人员
@@ -62,5 +62,38 @@ SELECT income / user_count as avg_income FROM order
   假设集合A={a, b}，集合B={0, 1, 2}，则两个集合的笛卡尔积为{(a, 0), (a, 1), (a, 2), (b, 0), (b, 1), (b, 2)}。
   ```
 
-  
+- 使用自连接删除重复行( `“自连接”(self join)，这个技巧常常被人们忽视，其实是有挺多妙用的` )
 
+<img src="C:\Users\BL\Desktop\工作文件夹\bestPhper\img\718C8900-B493-429e-A9FD-9321428A0C8E.png" style="zoom:80%;" />
+
+```
+DELETE FROM Products P1 WHERE id < (SELECT MAX(P2.id) FROM Products P2  WHERE P1.name = P2.name AND P1.price = P2.price)
+```
+
+- 求余额,通过下列`sql`实现图中的查询结果 
+
+  ```
+  ![B181CD88-E0A4-41d8-9A7C-483FC5DC75B6](C:\Users\BL\Desktop\工作文件夹\bestPhper\img\B181CD88-E0A4-41d8-9A7C-483FC5DC75B6.png)SELECT date, amount,(SELECT sum(amount) FROM accounts A2 WHERE A2.date <= A1.date ) AS balance FROM accounts A1 ORDER BY A1.date
+  ```
+
+  <img src="C:\Users\BL\Desktop\工作文件夹\bestPhper\img\66CDA565-AF75-4c0f-BDCC-C45D4ADC57E8.png" style="zoom:67%;" />
+
+- `union` 和 `union all`的区别,前者会过滤掉重复行而后者不会, 集合运算为了排除重复行, 默认的会发生排序, 而加上`all`选项后,就不会再排序了, 所以性能会有提升
+
+- 有如下会议表meetings求没有参加某次会议的人
+
+  ```
+  SELECT DISTINCT M1.meeting, M2.person FROM meetings M1 JOIN meetings M2 WHERE NOT EXISTS (SELECT * FROM meetings M3 WHERE M1.meeting = M3.meeting AND M2.person = M3.person)
+  ```
+
+<img src="C:\Users\BL\Desktop\工作文件夹\bestPhper\img\82BF7DA9-78E3-4dc1-8FCD-C69D9F02E39C.png"  />
+
+<img src="C:\Users\BL\Desktop\工作文件夹\bestPhper\img\B181CD88-E0A4-41d8-9A7C-483FC5DC75B6.png"  />
+
+- `in`子句的变种用法( 下列语句是查询`p1`, `p2`, `p3`, `p4`, `p5`, `p6`六个字段中值等于100的记录, 只要有一个字段的值为100记录就能匹配上 )
+
+  ```
+  SELECT * FROM table_name WHERE 100 IN (p1, p2, p3, p4, p5, p6)
+  ```
+
+  
