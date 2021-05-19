@@ -96,4 +96,18 @@ DELETE FROM Products P1 WHERE id < (SELECT MAX(P2.id) FROM Products P2  WHERE P1
   SELECT * FROM table_name WHERE 100 IN (p1, p2, p3, p4, p5, p6)
   ```
 
+- `count`的各种骚操作
+
+  | 条件表达式                           | 用途                                    |
+  | ------------------------------------ | --------------------------------------- |
+  | `count (distinct col) = count(col)`  | `col`列没有重复的值                     |
+  | `count(*) = count(col)`              | `col`列不存在`null`                     |
+  | `count(*) = max(col)`                | `col`列是连续的编号( 起始值是1 )        |
+  | `count(*) = max(col) - min(col) + 1` | `col`列是连续的编号( 起始值是任意整数 ) |
+  | `max(col) = min(col)`                | `col`都是相同值或者是`null`             |
+  | `max(col) * min(col) > 0`            | `col`列全是正数或全是负数               |
+  | `max(col) * min(col) < 0`            | `col`列的最大值是正数, 最小值是负数     |
+  | `min(ABS(col)) = 0`                  | `col`最少有一个0                        |
+  | `min(col - 常量) = -max(col - 常量)` | `col`列的最大值和最小值与指定常量等距   |
+
   
