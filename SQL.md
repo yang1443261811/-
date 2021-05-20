@@ -2,27 +2,25 @@
 
 ------
 
-- 模糊匹配关键字`LIKE`除了有百分号`（%）`通配符外还有下划线`（____）`通配符,下划线通配符可以用来匹配字符个数, 
+- 模糊匹配关键字`LIKE`除了有百分号`（%）`通配符外还有下划线`（____）`通配符,下划线通配符可以用来匹配字符个数
 
-
-```
-WHERE name LIKE '杨_' //这条语句表示检索姓杨,名字有两个字的记录,下划线的个数代表需要匹配的字符个数
-```
+  ```
+  WHERE name LIKE '杨_' //这条语句表示检索姓杨,名字有两个字的记录,下划线的个数代表需要匹配的字符个数
+  ```
 
 - 在`sql`中`AND`比`OR`优先级要高, 在使用时要注意
 
-
-```
-WHERE product_id = 1 OR product_id = 3 AND price > 100 //这条语句会被解释成,查询商品ID为1并且价格大于100的记录,以及商品ID为3的记录,这是因为AND操作符的优先级比OR高造成的
-```
+  ```
+  WHERE product_id = 1 OR product_id = 3 AND price > 100 //这条语句会被解释成,查询商品ID为1并且价格大于100的记录,以及商品ID为3的记录,这是因为AND操作符的优先级比OR高造成的
+  ```
 
 - 使用`conect()`, `group_conect()`等函数可以实现字段拼接
 
 - 在`sql`中字段与字段之间可以进行运算
 
-```
-SELECT income / user_count as avg_income FROM order
-```
+  ```
+  SELECT income / user_count as avg_income FROM order
+  ```
 
 - `count(*)`与`count(col)`的区别,`count(*)`可以用于`NULL`,而`count(col)`要先排除`NULL`的行再进行统计
 
@@ -64,11 +62,11 @@ SELECT income / user_count as avg_income FROM order
 
 - 使用自连接删除重复行( `“自连接”(self join)，这个技巧常常被人们忽视，其实是有挺多妙用的` )
 
-<img src="C:\Users\BL\Desktop\工作文件夹\bestPhper\img\718C8900-B493-429e-A9FD-9321428A0C8E.png" style="zoom:80%;" />
+  ```
+  DELETE FROM Products P1 WHERE id < (SELECT MAX(P2.id) FROM Products P2  WHERE P1.name = P2.name AND P1.price = P2.price)
+  ```
 
-```
-DELETE FROM Products P1 WHERE id < (SELECT MAX(P2.id) FROM Products P2  WHERE P1.name = P2.name AND P1.price = P2.price)
-```
+<img src="C:\Users\BL\Desktop\工作文件夹\bestPhper\img\718C8900-B493-429e-A9FD-9321428A0C8E.png" style="zoom:80%;" />
 
 - 求余额,通过下列`sql`实现图中的查询结果 
 
